@@ -1,0 +1,659 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enchanting Lavender Love Letter</title>
+    <style>
+        :root {
+            --lavender-light: #E6E6FA;
+            --lavender-medium: #9370DB;
+            --lavender-dark: #8A2BE2;
+            --gold: #FFD700;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--lavender-light), #ed178eb5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .scene {
+            perspective: 1000px;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background-color: #df1f1fbd;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 16px;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .envelope:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #47383861;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .envelope.open::before {
+            transform: rotateX(180deg);
+        }
+
+        .envelope::after {
+            content: '❤️';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            animation: heartbeat 1s infinite;
+        }
+
+
+        @keyframes heartbeat {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            20% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            40% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            60% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+
+        .letter-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-container.show {
+            display: flex;
+        }
+
+        .letter-content {
+            width: 100%;
+            max-width: 600px;
+            height: 100%;
+            background-color: #fff8e7;
+            /* Slightly off-white color for an aged paper look */
+            background-image:
+                linear-gradient(#e5e5e5 1px, transparent 1px),
+                linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
+            background-size: 100% 1.5em, 100% 100%;
+            background-position: 0 -1px;
+            border-radius: 16px;
+            overflow: auto;
+            position: relative;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            font-family: 'Brush Script MT', cursive;
+            line-height: 1.5em;
+            text-align: left;
+        }
+
+        .letter-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.1;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .letter-text {
+            font-size: 20px;
+            line-height: 1.5em;
+            color: #333;
+            position: relative;
+            z-index: 2;
+        }
+
+        .letter-text p {
+            margin-bottom: 20px;
+        }
+
+        .love-project-wrapper {
+            text-align: center;
+            /* Centers the button horizontally */
+            margin-top: 20px;
+        }
+
+        .love-project {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #7a5cff;
+            /* Lavender tone */
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .love-project:hover {
+            background-color: #6848e0;
+            transform: translateY(-2px);
+        }
+
+
+        /* body{margin:0;padding:0;background:#ffe;font-size:12px;overflow:auto} */
+        #mainDiv {
+            width: 100%;
+            height: 100%
+        }
+
+        #loveHeart {
+            float: left;
+            width: 670px;
+            height: 625px
+        }
+
+        #garden {
+            width: 93%;
+            height: 107%
+        }
+
+        #elapseClock {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+
+        #words {
+            font-family: "sans-serif";
+            width: 500px;
+            font-size: 24px;
+            color: #666
+        }
+
+        #messages {
+            display: none;
+            text-align: center;
+            font-size: 10px;
+            padding-left: 55px;
+        }
+
+        #elapseClock .digit {
+            font-family: "digit";
+            font-size: 40px;
+            text-align: center;
+        }
+
+        #loveu {
+            padding: 5px;
+            font-size: 10px;
+            margin-top: 50px;
+            margin-right: 176px;
+            text-align: right;
+            display: none
+        }
+
+        #loveu .signature {
+            margin-top: 10px;
+            font-size: 20px;
+            font-style: italic
+        }
+
+        #clickSound {
+            display: none
+        }
+
+        #code {
+            float: left;
+            width: 440px;
+            height: 400px;
+            color: #333;
+            font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", "sans-serif";
+            font-size: 12px
+        }
+
+        #code .string {
+            color: #2a36ff
+        }
+
+        #code .keyword {
+            color: #7f0055;
+            font-weight: bold
+        }
+
+        #code .placeholder {
+            margin-left: 15px
+        }
+
+        #code .space {
+            margin-left: 7px
+        }
+
+        #code .comments {
+            color: #3f7f5f
+        }
+
+        #copyright {
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+            color: #666
+        }
+
+        #errorMsg {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            position: absolute;
+            top: 100px;
+            left: 0
+        }
+
+        #copyright a {
+            color: #666
+        }
+
+        #icon {
+            font-size: 48px;
+            color: red;
+            margin: 50 px;
+            align-content: center;
+        }
+
+        #heartspan {
+            align-content: center;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .memories-btn {
+            display: inline-block;
+            padding: 4px 9px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+
+            color: #fff;
+            background: linear-gradient(135deg, #ff5f9e, #ff85a2);
+
+            border-radius: 40px;
+            box-shadow: 0 10px 25px rgba(255, 105, 135, 0.4);
+
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover effect */
+        .memories-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(255, 105, 135, 0.55);
+        }
+
+        /* Click effect */
+        .memories-btn:active {
+            transform: scale(0.97);
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/garden.js"></script>
+</head>
+
+<body>
+
+    <div id="content">
+        <div id="code">
+            <span class="comments">/**</span><br />
+            <span class="space" /><span class="comments">*THE CODE OF LOVE</span><br />
+            <span class="space" /><span class="comments">*/</span><br />
+            Hey Girl !<br />
+            Do you remember the day we first met?<br />
+            <span class="comments">// The ET-LAB Friday. </span><br />
+            Since that day a spark begun;<br />
+            <span class="comments">// Your face Your Voice Your Words.</span><br />
+            Your everything got imprinted in my heart;<br />
+            As the time went on;<br />
+            The Bond grew stronger and stronger;<br />
+            Journey from Infatuation to Love;<br />
+            We have traveled a long way together;<br />
+            There have been fights ;<br />
+            <span class="comments">// And I'm sure there will be more.</span><br />
+            But our Bond will always grow back Stronger;<br />
+            <br>
+            <br>
+            All I want to say is:<br />
+            Baby, I will love you forever;<br />
+            <br>
+            <br>
+            Now If you want to hug me you can touch the heart below<br />
+            <br>
+            <span id="heartspan">
+                <a href="image.jpg"><i class="fas fa-heart" id="icon"></i></a>
+            </span>
+        </div>
+    </div>
+
+    <div class="scene">
+        <div class="envelope" id="envelope">
+        </div>
+    </div>
+
+
+
+    <div class="letter-container" id="letter-container">
+        <div class="letter-content" style="opacity: 0;">
+            <span class="close-btn" id="close-btn">&times;</span>
+            <div class="letter-text">
+                <div id="loveHeart">
+                    <canvas id="garden"></canvas>
+                    <div id="words">
+                        <div id="messages">
+                            My Dearest [Crush's Name],<br>
+
+                            As I write this letter, my heart races with the thought of you. Your presence in my life has
+                            painted my world in shades of lavender – soft, enchanting, and utterly beautiful.
+
+                            From the moment I first saw you, I was captivated. Your smile lights up the room, and your
+                            laughter is the sweetest melody I've ever heard. The way your eyes sparkle when you're
+                            excited about something makes my heart skip a beat.
+                            There's so much I want to tell you, so many feelings I want to express. But for now, I'll
+                            simply say this: you're extraordinary. You're the first thing I think about when I wake up
+                            and the last thing on my mind before I fall asleep.
+                            <!-- <div id="elapseClock"></div> -->
+                        </div>
+                        <div id="loveu">
+                            <a href="galary.html" class="btn btn-primary memories-btn">Memories ❤️</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            adjustCodePosition();
+            $("#code").typewriter();
+        });
+
+        var loveHeart = $("#letter-container #loveHeart");
+        var gardenCanvas, gardenCtx, garden;
+
+        var together = new Date();
+        together.setFullYear(2016, 8, 5);
+        together.setHours(16);
+        together.setMinutes(30);
+        together.setSeconds(0);
+        together.setMilliseconds(0);
+        const envelope = document.getElementById('envelope');
+        const letterContainer = document.getElementById('letter-container');
+        const closeBtn = document.getElementById('close-btn');
+        const musicControl = document.getElementById('music-control');
+        const backgroundMusic = document.getElementById('background-music');
+
+
+        envelope.addEventListener('click', function () {
+            this.classList.add('open');
+            setTimeout(() => {
+                $("#letter-container").addClass("show");
+
+                setTimeout(() => {
+                    document.querySelector('.letter-content').style.opacity = '1';
+                    initLoveHeart();
+                }, 300);
+
+            }, 500);
+        });
+
+        /* =========================
+        CLOSE LETTER
+        ========================= */
+        closeBtn.addEventListener('click', function () {
+
+            // Hide letter & envelope
+            letterContainer.classList.remove('show');
+            envelope.classList.remove('open');
+
+            // Reset letter opacity
+            const letterContent = document.querySelector('.letter-content');
+            letterContent.style.opacity = '0';
+
+            // Clear heart canvas
+            const canvas = document.getElementById('garden');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Hide messages again
+            const messages = document.getElementById('messages');
+            const loveu = document.getElementById('loveu');
+
+            if (messages) messages.style.display = 'none';
+            if (loveu) loveu.style.display = 'none';
+
+        });
+
+
+        // closeBtn.addEventListener('click', function () {
+        //     letterContainer.classList.remove('show');
+        //     envelope.classList.remove('open');
+        // });
+
+
+        $('#words').css("position", "absolute");
+
+        //  typewriter jquery function
+        (function ($) {
+            $.fn.typewriter = function () {
+                this.each(function () {
+                    var $ele = $(this), str = $ele.html(), progress = 0;
+                    $ele.html('');
+                    var timer = setInterval(function () {
+                        var current = str.substr(progress, 1);
+                        if (current == '<') {
+                            progress = str.indexOf('>', progress) + 1;
+                        } else {
+                            progress++;
+                        }
+                        $ele.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));
+                        if (progress >= str.length) {
+                            clearInterval(timer);
+                        }
+                    }, 75);
+                });
+                return this;
+            };
+        })(jQuery);
+
+
+        function adjustCodePosition() {
+            $('#code').css("margin-top", '0px');
+        }
+
+        /* ============================
+           INIT AFTER LETTER IS SHOWN
+        ============================ */
+        function initLoveHeart() {
+            // Ensure elements are visible before measuring
+            var offsetX = loveHeart.outerWidth() / 2;
+            var offsetY = loveHeart.outerHeight() / 2 - 55;
+
+            var canvas = $("#garden")[0];
+            canvas.width = loveHeart.outerWidth();
+            canvas.height = loveHeart.outerHeight();
+
+            gardenCtx = canvas.getContext("2d");
+            gardenCtx.globalCompositeOperation = "lighter";
+            garden = new Garden(gardenCtx, canvas);
+
+            // Start heart animation
+            setTimeout(startHeartAnimation, 800);
+
+            timeElapse(together);
+            setInterval(function () {
+                timeElapse(together);
+            }, 500);
+
+            // Render loop
+            setInterval(function () {
+                garden.render();
+            }, Garden.options.growSpeed);
+        }
+
+        /* ============================
+           HEART PATH
+        ============================ */
+        function getHeartPoint(angle) {
+            var t = angle / Math.PI;
+            var x = 19.5 * (16 * Math.pow(Math.sin(t), 3));
+            var y = -20 * (
+                13 * Math.cos(t) -
+                5 * Math.cos(2 * t) -
+                2 * Math.cos(3 * t) -
+                Math.cos(4 * t)
+            );
+            return [
+                loveHeart.outerWidth() / 2 + x,
+                loveHeart.outerHeight() / 2 - 55 + y
+            ];
+        }
+
+        /* ============================
+           HEART ANIMATION
+        ============================ */
+        function startHeartAnimation() {
+            var interval = 50;
+            var angle = 10;
+            var heart = [];
+
+            var animationTimer = setInterval(function () {
+                var bloom = getHeartPoint(angle);
+                var draw = true;
+
+                for (var i = 0; i < heart.length; i++) {
+                    var p = heart[i];
+                    var distance = Math.sqrt(
+                        Math.pow(p[0] - bloom[0], 2) +
+                        Math.pow(p[1] - bloom[1], 2)
+                    );
+                    if (distance < Garden.options.bloomRadius.max * 1.3) {
+                        draw = false;
+                        break;
+                    }
+                }
+
+                if (draw) {
+                    heart.push(bloom);
+                    garden.createRandomBloom(bloom[0], bloom[1]);
+                }
+
+                if (angle >= 30) {
+                    clearInterval(animationTimer);
+                    showMessages();
+                } else {
+                    angle += 0.2;
+                }
+            }, interval);
+        }
+
+        /* ============================
+           TIME ELAPSE
+        ============================ */
+        function timeElapse(date) {
+            var current = new Date();
+            var seconds = (current - date) / 1000;
+
+            var days = Math.floor(seconds / (3600 * 24));
+            seconds %= 3600 * 24;
+
+            var hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+            seconds %= 3600;
+
+            var minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+            seconds = String(Math.floor(seconds % 60)).padStart(2, "0");
+
+            var result =
+                '<span class="digit">' + days + '</span> days ' +
+                '<span class="digit">' + hours + '</span> hours ' +
+                '<span class="digit">' + minutes + '</span> minutes ' +
+                '<span class="digit">' + seconds + '</span> seconds';
+
+            $("#elapseClock").html(result);
+        }
+
+        /* ============================
+           MESSAGE & LOVE U
+        ============================ */
+        function showMessages() {
+            adjustWordsPosition();
+            $("#messages").fadeIn(5000, showLoveU);
+        }
+
+        function showLoveU() {
+            $("#loveu").fadeIn(3000);
+        }
+
+        function adjustWordsPosition() {
+            var gardenPos = $("#garden").position();
+            $("#words").css({
+                position: "absolute",
+                top: gardenPos.top + 195,
+                left: gardenPos.left + 30
+            });
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
