@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrapbook Collage</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Optional: nice script font for the "love" text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+  --paper: #e7dfd2;
+  --paper-2: #d9cdbb;
+  --card: #f7f4ee;
+  --shadow: 0 18px 28px rgba(0,0,0,.18);
+  --shadow-soft: 0 10px 20px rgba(0,0,0,.12);
+  --tape: #c7a07a;
+  --ink: #121212;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height: 100%; }
+
+body{
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 700px at 30% 20%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(900px 600px at 70% 80%, rgba(255,255,255,.25), transparent 55%),
+    linear-gradient(135deg, var(--paper) 0%, var(--paper-2) 100%);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* Page frame */
+.page{
+  width: min(980px, 100%);
+}
+
+/* The collage board */
+.scrapbook{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: min(720px, 100%);
+  border-radius: 14px;
+  background:
+    linear-gradient(0deg, rgba(255,255,255,.35), rgba(255,255,255,.35)),
+    radial-gradient(900px 700px at 30% 30%, #efe7db 0%, #d8cbb7 55%, #cdbba2 100%);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: clamp(14px, 2.5vw, 24px);
+}
+
+/* Subtle paper grain */
+.paper-texture{
+  position: absolute;
+  inset: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E")
+    repeat;
+  mix-blend-mode: multiply;
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* -----------------------------
+   Polaroids / photo frames
+------------------------------ */
+.polaroid, .photo-card, .notebook{
+  position: absolute;
+  background: var(--card);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+}
+
+.polaroid{
+  padding: 10px 10px 18px;
+}
+
+.polaroid img,
+.photo-card img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.polaroid-bottom{
+  height: 10px;
+}
+
+/* left stack container */
+.stack{
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* purely visual */
+}
+
+/* Left vertical strip positions */
+.stack-left .p1{
+  width: 170px;
+  height: 215px;
+  left: 42px;
+  top: 55px;
+  transform: rotate(-2deg);
+  z-index: 4;
+}
+.stack-left .p2{
+  width: 170px;
+  height: 215px;
+  left: 30px;
+  top: 255px;
+  transform: rotate(2deg);
+  z-index: 3;
+}
+.stack-left .p3{
+  width: 150px;
+  height: 170px;
+  left: 50px;
+  top: 465px;
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+.polaroid.small{ padding-bottom: 14px; }
+
+/* Bottom-left wide polaroid */
+.polaroid.wide.bottom-left{
+  width: 320px;
+  height: 235px;
+  left: 282px;
+  bottom: 80px;
+  transform: rotate(-2deg);
+  z-index: 2;
+}
+
+/* Top-right wide photo card */
+.photo-card.top-right{
+  width: 350px;
+  height: 230px;
+  right: 55px;
+  top: 70px;
+  padding: 12px;
+  transform: rotate(1deg);
+  z-index: 3;
+}
+
+/* Tape strips */
+.tape{
+  position: absolute;
+  width: 110px;
+  height: 26px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(0,0,0,.08)),
+    var(--tape);
+  opacity: .95;
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0,0,0,.12);
+  filter: saturate(.9);
+}
+
+.tape::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.18) 0 6px,
+      rgba(0,0,0,.06) 6px 8px
+    );
+  border-radius: 4px;
+  opacity: .35;
+  mix-blend-mode: overlay;
+}
+
+.polaroid .tape-top{
+  left: 28px;
+  top: -10px;
+  transform: rotate(-8deg);
+}
+
+.photo-card .tape-left{
+  left: 25px;
+  top: -10px;
+  transform: rotate(-10deg);
+}
+
+.photo-card .tape-right{
+  right: 40px;
+  top: -12px;
+  transform: rotate(10deg);
+}
+
+/* -----------------------------
+   Notebook card
+------------------------------ */
+.notebook{
+  width: 360px;
+  height: 250px;
+  right: 65px;
+  bottom: 90px;
+  background:
+    linear-gradient(0deg, rgba(255,255,255,.92), rgba(255,255,255,.92)),
+    #f0eadf;
+  border-radius: 10px;
+  z-index: 4;
+  overflow: hidden;
+  transform: rotate(1deg);
+}
+
+.notebook-rings{
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 18px;
+  background:
+    radial-gradient(circle at 50% 12px, rgba(0,0,0,.18) 0 3px, transparent 4px) 0 0/18px 22px,
+    radial-gradient(circle at 50% 12px, rgba(255,255,255,.6) 0 2px, transparent 3px) 0 0/18px 22px;
+  opacity: .9;
+}
+
+.notebook-lines{
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 24px,
+      rgba(0,0,0,.08) 24px 25px
+    );
+  opacity: .35;
+  transform: translateY(26px);
+}
+
+.script{
+  position: absolute;
+  left: 70px;
+  top: 52%;
+  transform: translateY(-50%);
+  margin: 0;
+  font-family: "Allura", cursive;
+  font-size: clamp(62px, 7vw, 94px);
+  color: var(--ink);
+  letter-spacing: 1px;
+}
+
+/* -----------------------------
+   Heart cutout
+------------------------------ */
+.heart{
+  position: absolute;
+  right: 165px;
+  bottom: 35px;
+  width: 120px;
+  height: 110px;
+  transform: rotate(10deg);
+  z-index: 5;
+  filter: drop-shadow(0 12px 14px rgba(0,0,0,.14));
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.15), rgba(0,0,0,.10)),
+    radial-gradient(120px 90px at 30% 30%, #d9b19d 0%, #c48870 55%, #b46d59 100%);
+  clip-path: path("M60 18 C60 5, 42 0, 32 8 C20 18, 20 35, 33 47 L60 74 L87 47 C100 35, 100 18, 88 8 C78 0, 60 5, 60 18 Z");
+  border-radius: 10px;
+  opacity: .95;
+}
+
+/* -----------------------------
+   Dried flowers (simple vector-ish blobs)
+------------------------------ */
+.flower{
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  z-index: 6;
+  opacity: .9;
+}
+
+.flower::before,
+.flower::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 40% 35%, #f2d8c7 0 10px, transparent 11px),
+    radial-gradient(circle at 60% 50%, #e6bfa8 0 9px, transparent 10px),
+    radial-gradient(circle at 48% 65%, #f0cfbd 0 8px, transparent 9px);
+  transform: rotate(-10deg);
+}
+
+.flower::after{
+  background:
+    linear-gradient(90deg, transparent 0 38px, rgba(117,79,49,.55) 38px 40px, transparent 40px),
+    linear-gradient(90deg, transparent 0 41px, rgba(117,79,49,.45) 41px 43px, transparent 43px),
+    radial-gradient(circle at 44% 42%, rgba(255,255,255,.35) 0 2px, transparent 3px);
+  opacity: .85;
+}
+
+.f1{ left: 120px; bottom: 120px; transform: rotate(-12deg); }
+.f2{ right: 70px; top: 210px; transform: rotate(18deg) scale(.95); opacity: .8; }
+.f3{ left: 245px; top: 205px; transform: rotate(-18deg) scale(.85); opacity: .75; }
+
+/* -----------------------------
+   Responsive tweaks
+------------------------------ */
+@media (max-width: 640px){
+  .scrapbook{ width: 100%; }
+  .stack-left .p1,
+  .stack-left .p2{ width: 135px; height: 180px; }
+  .stack-left .p3{ width: 120px; height: 145px; top: 420px; }
+  .photo-card.top-right{ width: 290px; height: 195px; right: 20px; top: 55px; }
+  .polaroid.wide.bottom-left{ width: 270px; height: 205px; left: 150px; bottom: 92px; }
+  .notebook{ width: 320px; height: 230px; right: 20px; bottom: 80px; }
+  .heart{ right: 120px; bottom: 30px; transform: rotate(8deg) scale(.95); }
+}
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="scrapbook" aria-label="Scrapbook collage hero">
+
+      <!-- Subtle texture layer -->
+      <div class="paper-texture" aria-hidden="true"></div>
+
+      <!-- LEFT: vertical stack of polaroids -->
+      <div class="stack stack-left">
+        <article class="polaroid p1">
+          <div class="tape tape-top"></div>
+          <img src="assets/photo-1.jpg" alt="Photo 1" />
+          <div class="polaroid-bottom"></div>
+        </article>
+
+        <article class="polaroid p2">
+          <img src="assets/photo-2.jpg" alt="Photo 2" />
+          <div class="polaroid-bottom"></div>
+        </article>
+
+        <article class="polaroid p3 small">
+          <img src="assets/photo-3.jpg" alt="Photo 3" />
+          <div class="polaroid-bottom"></div>
+        </article>
+      </div>
+
+      <!-- TOP RIGHT: landscape photo card with tape -->
+      <article class="photo-card top-right">
+        <div class="tape tape-left"></div>
+        <div class="tape tape-right"></div>
+        <img src="assets/photo-4.jpg" alt="Wide photo" />
+      </article>
+
+      <!-- BOTTOM LEFT: wider polaroid -->
+      <article class="polaroid wide bottom-left">
+        <img src="assets/photo-5.jpg" alt="Wide polaroid" />
+        <div class="polaroid-bottom"></div>
+      </article>
+
+      <!-- BOTTOM RIGHT: notebook card with big script text -->
+      <!-- <article class="notebook">
+        <div class="notebook-rings" aria-hidden="true"></div>
+        <div class="notebook-lines" aria-hidden="true"></div>
+        <h1 class="script">love</h1>
+      </article> -->
+
+      <!-- Decorative heart cutout -->
+      <div class="heart" aria-hidden="true"></div>
+
+      <!-- Decorative dried flowers -->
+      <div class="flower f1" aria-hidden="true"></div>
+      <div class="flower f2" aria-hidden="true"></div>
+      <div class="flower f3" aria-hidden="true"></div>
+
+    </section>
+  </main>
+</body>
+</html>
