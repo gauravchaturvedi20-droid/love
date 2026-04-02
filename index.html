@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Enchanting Lavender Love Letter</title>
+    <title>Enchanting Lavender Love Letter</title>
 
-<!-- ✅ Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ✅ Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- ✅ FontAwesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- ✅ FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 
     <style>
@@ -218,7 +219,7 @@
 
         #words {
             font-family: "sans-serif";
-            width:460px;
+            width: 460px;
             font-size: 24px;
             color: #666;
             /* margin-block: -131px; */
@@ -237,7 +238,7 @@
             text-align: center;
         }
 
-        #loveu {
+        .loveu {
             font-size: 10px;
             margin-top: 10px;
             margin-right: 150px;
@@ -245,7 +246,7 @@
             display: none
         }
 
-        #loveu .signature {
+        .loveu .signature {
             margin-top: 10px;
             font-size: 20px;
             font-style: italic
@@ -347,27 +348,95 @@
         .memories-btn:active {
             transform: scale(0.97);
         }
-        
+
+
+        .buttons {
+            position: relative;
+            height: 120px;
+        }
+
+        button {
+            padding: 14px 28px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            position: absolute;
+            transition: 0.25s ease;
+        }
+
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            left: 84%;
+            transform: translateX(-50%);
+            bottom: 0;
+            box-shadow: 0 8px 18px rgba(255, 77, 109, 0.4);
+        }
+
+        #yesBtn:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        #noBtn {
+            background: #eee;
+            color: #333;
+            left: 100%;
+            top: 10px;
+        }
+
+        .celebration {
+            display: none;
+        }
+
+        .celebration h1 {
+            color: #ff4d6d;
+        }
+
+        .hearts {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 20px;
+            animation: floatUp 3s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-120px);
+                opacity: 0;
+            }
+        }
     </style>
 
-<!-- ✅ jQuery (required for your typewriter & garden.js) -->
-<script src="Js/jquery.js"></script>
-<script src="Js/garden.js"></script>
+    <!-- ✅ jQuery (required for your typewriter & garden.js) -->
+    <script src="js/jquery.js"></script>
+    <script src="js/garden.js"></script>
 </head>
 
 <body class="d-flex justify-content-center align-items-center">
 
-<!-- ✅ Main Bootstrap Container -->
-<div class="container text-center">
+    <!-- ✅ Main Bootstrap Container -->
+    <div class="container text-center">
 
-    <!-- Code Block -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-8 col-md-10">
-            <pre id="code" class="text-start small bg-light p-3 rounded">
+        <!-- Code Block -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 col-md-10">
+                <pre id="code" class="text-start small bg-light p-3 rounded">
                 <span class="comments">/**</span>
                 <span class="space" /><span class="comments">*THE CODE OF LOVE</span>
                 <span class="space" /><span class="comments">*/</span>
-                Dear Khushi !
+                Hey Girl !
                 Do you remember the day we first met?
                 <span class="comments">// The ET-LAB Friday. </span>
                 Since that day a spark begun;
@@ -379,60 +448,67 @@
                 We have traveled a long way together;
                 There have been fights ;
                 <span class="comments">// And I'm sure there will be more.</span>
-                But our Bond will always grow back Stronger;
-                
-                All I want to say is:
-                Baby, I will love you forever;
-                
                 Now If you want to hug me you can touch the heart below
+                <div id="loveu1">
+                    <a href="gallery.html" class="btn btn-primary memories-btn">Memories ❤️</a>
+                </div>
             </pre>
-        </div>
-    </div>
-
-    <!-- Envelope -->
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <div class="envelope" id="envelope"></div>
-        </div>
-    </div>
-
-</div>
-
-<!-- ✅ Letter Overlay -->
-<div class="letter-container justify-content-center align-items-center" id="letter-container">
-    <div class="letter-content">
-        <span class="close-btn" id="close-btn">&times;</span>
-
-        <div id="loveHeart" class="text-center mb-3">
-            <canvas id="garden"></canvas>
-            <div id="words">
-                <div id="messages">
-                    My Dearest [Crush's Name],<br>
-
-                    As I write this letter, my heart races with the thought of you. Your presence in my life has
-                    painted my world in shades of lavender – soft, enchanting, and utterly beautiful.
-
-                    From the moment I first saw you, I was captivated. Your smile lights up the room, and your
-                    laughter is the sweetest melody I've ever heard. The way your eyes sparkle when you're
-                    excited about something makes my heart skip a beat.
-                    There's so much I want to tell you, so many feelings I want to express. But for now, I'll
-                    simply say this: you're extraordinary. You're the first thing I think about when I wake up
-                    and the last thing on my mind before I fall asleep.
-                    <!-- <div id="elapseClock"></div> -->
-                </div>
-                <div id="loveu">
-                    <a href="/gallery.html" class="btn btn-primary memories-btn">Memories ❤️</a>
-                </div>
             </div>
-           
         </div>
 
-        
-    </div>
-</div>
+        <!-- Envelope -->
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div class="envelope" id="envelope"></div>
+            </div>
+        </div>
 
-<!-- ✅ Your Original JS Logic (UNCHANGED) -->
-<script>
+    </div>
+
+    <!-- ✅ Letter Overlay -->
+    <div class="letter-container justify-content-center align-items-center" id="letter-container">
+        <div class="letter-content">
+            <span class="close-btn" id="close-btn">&times;</span>
+
+            <div id="loveHeart" class="text-center mb-3">
+                <canvas id="garden"></canvas>
+                <div id="words">
+                    <div id="messages">
+                        My Dearest [Crush's Name],<br>
+
+                        As I write this letter, my heart races with the thought of you. Your presence in my life has
+                        painted my world in shades of lavender – soft, enchanting, and utterly beautiful.
+
+                        From the moment I first saw you, I was captivated. Your smile lights up the room, and your
+                        laughter is the sweetest melody I've ever heard. The way your eyes sparkle when you're
+                        excited about something makes my heart skip a beat.
+                        There's so much I want to tell you, so many feelings I want to express. But for now, I'll
+                        simply say this: you're extraordinary. You're the first thing I think about when I wake up
+                        and the last thing on my mind before I fall asleep.
+                        <!-- <div id="elapseClock"></div> -->
+                    </div>
+                    <div id="loveu2" class="loveu">
+                        <div id="askState">
+                            <div class="buttons ">
+                                <button id="noBtn">No</button>
+                                <button id="yesBtn">Yes 💕</button>
+                            </div>
+                        </div>
+                        <div class="celebration" id="celebrateState">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="hearts" id="hearts"></div>
+
+        </div>
+    </div>
+    <!-- ✅ Your Original JS Logic (UNCHANGED) -->
+    <script>
         $(document).ready(function () {
             adjustCodePosition();
             $("#code").typewriter();
@@ -489,10 +565,14 @@
 
             // Hide messages again
             const messages = document.getElementById('messages');
-            const loveu = document.getElementById('loveu');
+            const loveu1 = document.getElementById('loveu1');
+            const loveu2 = document.getElementById('loveu2');
 
             if (messages) messages.style.display = 'none';
-            if (loveu) loveu.style.display = 'none';
+            if (loveu1) loveu1.style.display = 'none';
+            if (loveu2) loveu2.style.display = 'none';
+
+            window.location.reload();
 
         });
 
@@ -653,7 +733,8 @@
         }
 
         function showLoveU() {
-            $("#loveu").fadeIn(3000);
+            $("#loveu1").fadeIn(3000);
+            $("#loveu2").fadeIn(3000);
         }
 
         function adjustWordsPosition() {
@@ -666,9 +747,74 @@
         }
 
 
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+        const askState = document.getElementById("askState");
+        const celebrateState = document.getElementById("celebrateState");
+        const heartsContainer = document.getElementById("hearts");
+
+        const moveNoButton = () => {
+            const card = document.querySelector("#loveHeart");
+            const rect = card.getBoundingClientRect();
+
+            const padding = 20;
+            const maxX = rect.width - noBtn.offsetWidth - padding;
+            const maxY = 100;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        };
+
+        // Desktop hover
+        noBtn.addEventListener("mouseenter", moveNoButton);
+
+        // Mobile touch
+        noBtn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        yesBtn.addEventListener("click", () => {
+            askState.style.display = "none";
+            celebrateState.style.display = "block";
+            startHearts();
+
+            
+            alert("💕 Yay! Let's chat on WhatsApp 💬");
+
+            // Replace with your WhatsApp number
+            const whatsappLink = "https://wa.me/XXXXXXXXXX";
+            window.open(whatsappLink, "_blank");
+
+        });
+
+        function startHearts() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "❤️";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.bottom = "20px";
+            heart.style.fontSize = 16 + Math.random() * 20 + "px";
+
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
 
 
     </script>
 
 </body>
+
 </html>
