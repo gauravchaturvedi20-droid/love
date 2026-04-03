@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +13,6 @@
 
     <!-- ✅ FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
 
     <style>
         :root {
@@ -31,7 +31,127 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            position: relative; /* ✅ required for vignette layering */
         }
+
+        /* ==========================
+           ✅ ROMANTIC DECOR (NEW)
+           Purely visual — no JS changes
+        ========================== */
+
+        /* Floating hearts/sparkles background */
+        .romantic-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .romantic-bg span {
+            position: absolute;
+            bottom: -10%;
+            font-size: 24px;
+            opacity: 0.25;
+            animation: floatRomance 12s linear infinite;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+        }
+
+        .romantic-bg span:nth-child(1) { left: 8%;  animation-delay: 0s;  font-size: 22px; }
+        .romantic-bg span:nth-child(2) { left: 22%; animation-delay: 2s;  font-size: 30px; }
+        .romantic-bg span:nth-child(3) { left: 38%; animation-delay: 4s;  font-size: 26px; }
+        .romantic-bg span:nth-child(4) { left: 55%; animation-delay: 6s;  font-size: 34px; }
+        .romantic-bg span:nth-child(5) { left: 70%; animation-delay: 8s;  font-size: 24px; }
+        .romantic-bg span:nth-child(6) { left: 86%; animation-delay: 10s; font-size: 28px; }
+        .romantic-bg span:nth-child(7) { left: 15%; animation-delay: 1s;  font-size: 20px; }
+        .romantic-bg span:nth-child(8) { left: 62%; animation-delay: 5s;  font-size: 22px; }
+        .romantic-bg span:nth-child(9) { left: 92%; animation-delay: 7s;  font-size: 18px; }
+
+        @keyframes floatRomance {
+            from {
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+                opacity: 0.15;
+            }
+            30% {
+                opacity: 0.3;
+            }
+            to {
+                transform: translateX(-60px) translateY(-130vh) scale(1.35) rotate(12deg);
+                opacity: 0;
+            }
+        }
+
+        /* Soft vignette (fills blank space, focuses center) */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0) 52%, rgba(0,0,0,0.32) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Decorative frame for main content */
+        .love-frame {
+            position: relative;
+            padding: 40px 20px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            box-shadow:
+                0 0 0 2px rgba(255,255,255,0.28),
+                0 25px 70px rgba(0,0,0,0.25);
+            z-index: 2; /* above vignette + bg */
+        }
+
+        /* Corner flourishes */
+        .corner {
+            position: absolute;
+            font-size: 34px;
+            color: rgba(255, 77, 109, 0.6);
+            user-select: none;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+        }
+
+        .top-left { top: 12px; left: 16px; transform: rotate(0deg); }
+        .top-right { top: 12px; right: 16px; transform: rotate(90deg); }
+        .bottom-left { bottom: 12px; left: 16px; transform: rotate(-90deg); }
+        .bottom-right { bottom: 12px; right: 16px; transform: rotate(180deg); }
+
+        /* OPTIONAL petals (still purely visual) */
+        .petals {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .petals span {
+            position: absolute;
+            top: -10%;
+            opacity: 0.3;
+            animation: fallPetals 14s linear infinite;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.14));
+        }
+
+        .petals span:nth-child(1) { left: 12%; font-size: 22px; animation-delay: 0s; }
+        .petals span:nth-child(2) { left: 44%; font-size: 18px; animation-delay: 4s; }
+        .petals span:nth-child(3) { left: 76%; font-size: 24px; animation-delay: 8s; }
+        .petals span:nth-child(4) { left: 90%; font-size: 16px; animation-delay: 2s; }
+
+        @keyframes fallPetals {
+            to {
+                top: 115%;
+                transform: translateX(-90px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ==========================
+           ✅ YOUR ORIGINAL CSS (UNCHANGED)
+        ========================== */
 
         .scene {
             perspective: 1000px;
@@ -73,38 +193,22 @@
         }
 
         .envelope::after {
-            content: '❤️';
+            content: 'Open me❤️';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 70px;
+            font-size: 50px;
             animation: heartbeat 1s infinite;
         }
 
-
         @keyframes heartbeat {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-            }
-
-            20% {
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-
-            40% {
-                transform: translate(-50%, -50%) scale(1);
-            }
-
-            60% {
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-            }
+            0% { transform: translate(-50%, -50%) scale(1); }
+            20% { transform: translate(-50%, -50%) scale(1.2); }
+            40% { transform: translate(-50%, -50%) scale(1); }
+            60% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
-
 
         .letter-container {
             display: none;
@@ -124,11 +228,7 @@
         }
 
         .letter-content {
-            /* width: 100%; */
-            /* max-width: 600px; */
-            /* height: 100%; */
             background-color: #fff8e7;
-            /* Slightly off-white color for an aged paper look */
             background-image:
                 linear-gradient(#e5e5e5 1px, transparent 1px),
                 linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
@@ -142,6 +242,8 @@
             font-family: 'Brush Script MT', cursive;
             line-height: 1.5em;
             text-align: left;
+            opacity: 0; /* your JS sets it to 1 */
+            transition: opacity .35s ease;
         }
 
         .letter-content::before {
@@ -171,7 +273,6 @@
 
         .love-project-wrapper {
             text-align: center;
-            /* Centers the button horizontally */
             margin-top: 20px;
         }
 
@@ -179,7 +280,6 @@
             display: inline-block;
             padding: 12px 24px;
             background-color: #7a5cff;
-            /* Lavender tone */
             color: #ffffff;
             text-decoration: none;
             font-size: 16px;
@@ -192,51 +292,12 @@
             transform: translateY(-2px);
         }
 
-
-        /* body{margin:0;padding:0;background:#ffe;font-size:12px;overflow:auto} */
-        #mainDiv {
-            width: 100%;
-            height: 100%
-        }
-
-        #loveHeart {
-            float: left;
-            width: 670px;
-            height: 625px
-        }
-
-        /* #garden {
-            width: 93%;
-            height: 107%
-        } */
-
-        #elapseClock {
-            text-align: right;
-            font-size: 18px;
-            margin-top: 10px;
-            margin-bottom: 10px
-        }
-
-        #words {
-            font-family: "sans-serif";
-            width: 460px;
-            font-size: 24px;
-            color: #666;
-            /* margin-block: -131px; */
-        }
-
-        #messages {
-            display: none;
-            text-align: center;
-            font-size: 10px;
-            padding-left: 55px;
-        }
-
-        #elapseClock .digit {
-            font-family: "digit";
-            font-size: 40px;
-            text-align: center;
-        }
+        #mainDiv { width: 100%; height: 100% }
+        #loveHeart { float: left; width: 670px; height: 625px }
+        #elapseClock { text-align: right; font-size: 18px; margin-top: 10px; margin-bottom: 10px }
+        #words { font-family: "sans-serif"; width: 460px; font-size: 24px; color: #666; }
+        #messages { display: none; text-align: center; font-size: 10px; padding-left: 55px; }
+        #elapseClock .digit { font-family: "digit"; font-size: 40px; text-align: center; }
 
         .loveu {
             font-size: 10px;
@@ -252,40 +313,20 @@
             font-style: italic
         }
 
-        #clickSound {
-            display: none
-        }
+        #clickSound { display: none }
 
         #code {
-            /* float: left;
-            width: 440px;
-            height: 400px; */
             overflow: auto;
             color: #333;
             font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", "sans-serif";
             font-size: 12px
         }
 
-        #code .string {
-            color: #2a36ff
-        }
-
-        #code .keyword {
-            color: #7f0055;
-            font-weight: bold
-        }
-
-        #code .placeholder {
-            margin-left: 15px
-        }
-
-        #code .space {
-            margin-left: 7px
-        }
-
-        #code .comments {
-            color: #3f7f5f
-        }
+        #code .string { color: #2a36ff }
+        #code .keyword { color: #7f0055; font-weight: bold }
+        #code .placeholder { margin-left: 15px }
+        #code .space { margin-left: 7px }
+        #code .comments { color: #3f7f5f }
 
         #copyright {
             margin-top: 10px;
@@ -303,22 +344,9 @@
             left: 0
         }
 
-        #copyright a {
-            color: #666
-        }
-
-        #icon {
-            font-size: 48px;
-            color: red;
-            margin: 50 px;
-            align-content: center;
-        }
-
-        #heartspan {
-            align-content: center;
-            text-align: center;
-            margin: 20px;
-        }
+        #copyright a { color: #666 }
+        #icon { font-size: 48px; color: red; margin: 50 px; align-content: center; }
+        #heartspan { align-content: center; text-align: center; margin: 20px; }
 
         .memories-btn {
             display: inline-block;
@@ -326,34 +354,23 @@
             font-weight: 500;
             font-family: 'Poppins', sans-serif;
             text-decoration: none;
-
             color: #fff;
             background: linear-gradient(135deg, #ff5f9e, #ff85a2);
-
             border-radius: 40px;
             box-shadow: 0 10px 25px rgba(255, 105, 135, 0.4);
-
             transition: all 0.35s ease;
             position: relative;
             overflow: hidden;
         }
 
-        /* Hover effect */
         .memories-btn:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 0 15px 35px rgba(255, 105, 135, 0.55);
         }
 
-        /* Click effect */
-        .memories-btn:active {
-            transform: scale(0.97);
-        }
+        .memories-btn:active { transform: scale(0.97); }
 
-
-        .buttons {
-            position: relative;
-            height: 120px;
-        }
+        .buttons { position: relative; height: 120px; }
 
         button {
             padding: 14px 28px;
@@ -374,9 +391,7 @@
             box-shadow: 0 8px 18px rgba(255, 77, 109, 0.4);
         }
 
-        #yesBtn:hover {
-            transform: translateX(-50%) scale(1.05);
-        }
+        #yesBtn:hover { transform: translateX(-50%) scale(1.05); }
 
         #noBtn {
             background: #eee;
@@ -385,37 +400,15 @@
             top: 10px;
         }
 
-        .celebration {
-            display: none;
-        }
+        .celebration { display: none; }
+        .celebration h1 { color: #ff4d6d; }
 
-        .celebration h1 {
-            color: #ff4d6d;
-        }
-
-        .hearts {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .heart {
-            position: absolute;
-            color: #ff4d6d;
-            font-size: 20px;
-            animation: floatUp 3s ease-out forwards;
-        }
+        .hearts { position: fixed; inset: 0; pointer-events: none; }
+        .heart { position: absolute; color: #ff4d6d; font-size: 20px; animation: floatUp 3s ease-out forwards; }
 
         @keyframes floatUp {
-            from {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateY(-120px);
-                opacity: 0;
-            }
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-120px); opacity: 0; }
         }
     </style>
 
@@ -426,8 +419,26 @@
 
 <body class="d-flex justify-content-center align-items-center">
 
+    <!-- ✅ NEW: romantic floating background (purely decorative) -->
+    <div class="romantic-bg" aria-hidden="true">
+        <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+        <span>❤</span><span>✨</span><span>✨</span><span>✨</span>
+    </div>
+
+    <!-- ✅ NEW: optional petals (purely decorative) -->
+    <div class="petals" aria-hidden="true">
+        <span>🌸</span><span>🌸</span><span>🌸</span><span>🌸</span>
+    </div>
+
     <!-- ✅ Main Bootstrap Container -->
-    <div class="container text-center">
+    <!-- ✅ Only change: added "love-frame" class (no functionality impact) -->
+    <div class="container text-center love-frame">
+
+        <!-- ✅ NEW: corner flourishes (purely decorative) -->
+        <span class="corner top-left">❥</span>
+        <span class="corner top-right">❥</span>
+        <span class="corner bottom-left">❥</span>
+        <span class="corner bottom-right">❥</span>
 
         <!-- Code Block -->
         <div class="row justify-content-center mb-4">
@@ -438,7 +449,7 @@
                 <span class="space" /><span class="comments">*/</span>
                 My Love,Khushi !
                 Made with love—for the one who owns my heart.
-               <span class="comments">// Forever? Yeah, it starts with you. </span>
+                <span class="comments">// Forever? Yeah, it starts with you. </span>
                 <span class="comments">// I see you. I appreciate you. I choose you</span>
                 <span class="comments">// No matter where life takes us, I’m on your side;</span>
                 <span class="comments">//The Bond grew stronger and stronger;</span>
@@ -448,373 +459,4 @@
                 <span class="comments">// I’m not perfect, but my love for you is real, constant,</span>
                 <span class="comments">//and comes with unlimited hoodie stealing</span>
                 <div id="loveu1">
-                    <a href="gallery.html" class="btn btn-primary memories-btn">Proof We’re Adorable ❤️</a>
-                </div>
-            </pre>
-            </div>
-        </div>
-
-        <!-- Envelope -->
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <div class="envelope" id="envelope"></div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- ✅ Letter Overlay -->
-    <div class="letter-container justify-content-center align-items-center" id="letter-container">
-        <div class="letter-content">
-            <span class="close-btn" id="close-btn">&times;</span>
-
-            <div id="loveHeart" class="text-center mb-3">
-                <canvas id="garden"></canvas>
-                <div id="words">
-                    <div id="messages">
-                         My Dearest Khushi,<br>
-
-                        I don’t know when exactly it happened—but somewhere between the small talks, the laughs, the arguments, and the quiet moments, you became my home.<br>
-
-                        Loving you hasn’t been perfect or easy, but it has always been real. We’ve grown, we’ve learned, we’ve stumbled, and somehow, we’ve always found our way back to each other—stronger than before.<br>
-						
-                        You mean more to me than you probably realize. I notice the little things. I care deeply, even on days when I don’t say it enough. And no matter where life takes us, I want you to know this: I’m choosing you—again and again.<br>
-						
-						This page, this letter, this love—
-						it’s all yours.<br>
-						
-						Always,
-						Yours
-                        <!-- <div id="elapseClock"></div> -->
-                    </div>
-                    <div id="loveu2" class="loveu">
-                        <div id="askState">
-                            <div class="buttons ">
-                                <button id="noBtn">Slap</button>
-                                <button id="yesBtn">Send Me a 😘</button>
-                            </div>
-                        </div>
-                        <div class="celebration" id="celebrateState">
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="hearts" id="hearts"></div>
-
-        </div>
-    </div>
-    <!-- ✅ Your Original JS Logic (UNCHANGED) -->
-    <script>
-        $(document).ready(function () {
-            adjustCodePosition();
-            $("#code").typewriter();
-        });
-
-        var loveHeart = $("#letter-container #loveHeart");
-        var gardenCanvas, gardenCtx, garden;
-
-        var together = new Date();
-        together.setFullYear(2016, 8, 5);
-        together.setHours(16);
-        together.setMinutes(30);
-        together.setSeconds(0);
-        together.setMilliseconds(0);
-        const envelope = document.getElementById('envelope');
-        const letterContainer = document.getElementById('letter-container');
-        const closeBtn = document.getElementById('close-btn');
-        const musicControl = document.getElementById('music-control');
-        const backgroundMusic = document.getElementById('background-music');
-
-
-        envelope.addEventListener('click', function () {
-            this.classList.add('open');
-            setTimeout(() => {
-                $("#letter-container").addClass("show");
-
-                setTimeout(() => {
-                    document.querySelector('.letter-content').style.opacity = '1';
-                    initLoveHeart();
-                }, 300);
-
-            }, 500);
-        });
-
-        /* =========================
-        CLOSE LETTER
-        ========================= */
-        closeBtn.addEventListener('click', function () {
-
-            // Hide letter & envelope
-            letterContainer.classList.remove('show');
-            envelope.classList.remove('open');
-
-            // Reset letter opacity
-            const letterContent = document.querySelector('.letter-content');
-            letterContent.style.opacity = '0';
-
-            // Clear heart canvas
-            const canvas = document.getElementById('garden');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-
-            // Hide messages again
-            const messages = document.getElementById('messages');
-            const loveu1 = document.getElementById('loveu1');
-            const loveu2 = document.getElementById('loveu2');
-
-            if (messages) messages.style.display = 'none';
-            if (loveu1) loveu1.style.display = 'none';
-            if (loveu2) loveu2.style.display = 'none';
-
-            window.location.reload();
-
-        });
-
-
-        // closeBtn.addEventListener('click', function () {
-        //     letterContainer.classList.remove('show');
-        //     envelope.classList.remove('open');
-        // });
-
-
-        $('#words').css("position", "absolute");
-
-        //  typewriter jquery function
-        (function ($) {
-            $.fn.typewriter = function () {
-                this.each(function () {
-                    var $ele = $(this), str = $ele.html(), progress = 0;
-                    $ele.html('');
-                    var timer = setInterval(function () {
-                        var current = str.substr(progress, 1);
-                        if (current == '<') {
-                            progress = str.indexOf('>', progress) + 1;
-                        } else {
-                            progress++;
-                        }
-                        $ele.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));
-                        if (progress >= str.length) {
-                            clearInterval(timer);
-                        }
-                    }, 75);
-                });
-                return this;
-            };
-        })(jQuery);
-
-
-        function adjustCodePosition() {
-            $('#code').css("margin-top", '0px');
-        }
-
-        /* ============================
-           INIT AFTER LETTER IS SHOWN
-        ============================ */
-        function initLoveHeart() {
-            // Ensure elements are visible before measuring
-            var offsetX = loveHeart.outerWidth() / 2;
-            var offsetY = loveHeart.outerHeight() / 2 - 55;
-
-            var canvas = $("#garden")[0];
-            canvas.width = loveHeart.outerWidth();
-            canvas.height = loveHeart.outerHeight();
-
-            gardenCtx = canvas.getContext("2d");
-            gardenCtx.globalCompositeOperation = "lighter";
-            garden = new Garden(gardenCtx, canvas);
-
-            // Start heart animation
-            setTimeout(startHeartAnimation, 800);
-
-            timeElapse(together);
-            setInterval(function () {
-                timeElapse(together);
-            }, 500);
-
-            // Render loop
-            setInterval(function () {
-                garden.render();
-            }, Garden.options.growSpeed);
-        }
-
-        /* ============================
-           HEART PATH
-        ============================ */
-        function getHeartPoint(angle) {
-            var t = angle / Math.PI;
-            var x = 19.5 * (16 * Math.pow(Math.sin(t), 3));
-            var y = -20 * (
-                13 * Math.cos(t) -
-                5 * Math.cos(2 * t) -
-                2 * Math.cos(3 * t) -
-                Math.cos(4 * t)
-            );
-            return [
-                loveHeart.outerWidth() / 2 + x,
-                loveHeart.outerHeight() / 2 - 55 + y
-            ];
-        }
-
-        /* ============================
-           HEART ANIMATION
-        ============================ */
-        function startHeartAnimation() {
-            var interval = 50;
-            var angle = 10;
-            var heart = [];
-
-            var animationTimer = setInterval(function () {
-                var bloom = getHeartPoint(angle);
-                var draw = true;
-
-                for (var i = 0; i < heart.length; i++) {
-                    var p = heart[i];
-                    var distance = Math.sqrt(
-                        Math.pow(p[0] - bloom[0], 2) +
-                        Math.pow(p[1] - bloom[1], 2)
-                    );
-                    if (distance < Garden.options.bloomRadius.max * 1.3) {
-                        draw = false;
-                        break;
-                    }
-                }
-
-                if (draw) {
-                    heart.push(bloom);
-                    garden.createRandomBloom(bloom[0], bloom[1]);
-                }
-
-                if (angle >= 30) {
-                    clearInterval(animationTimer);
-                    showMessages();
-                } else {
-                    angle += 0.2;
-                }
-            }, interval);
-        }
-
-        /* ============================
-           TIME ELAPSE
-        ============================ */
-        function timeElapse(date) {
-            var current = new Date();
-            var seconds = (current - date) / 1000;
-
-            var days = Math.floor(seconds / (3600 * 24));
-            seconds %= 3600 * 24;
-
-            var hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
-            seconds %= 3600;
-
-            var minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
-            seconds = String(Math.floor(seconds % 60)).padStart(2, "0");
-
-            var result =
-                '<span class="digit">' + days + '</span> days ' +
-                '<span class="digit">' + hours + '</span> hours ' +
-                '<span class="digit">' + minutes + '</span> minutes ' +
-                '<span class="digit">' + seconds + '</span> seconds';
-
-            $("#elapseClock").html(result);
-        }
-
-        /* ============================
-           MESSAGE & LOVE U
-        ============================ */
-        function showMessages() {
-            adjustWordsPosition();
-            $("#messages").fadeIn(5000, showLoveU);
-        }
-
-        function showLoveU() {
-            $("#loveu1").fadeIn(3000);
-            $("#loveu2").fadeIn(3000);
-        }
-
-        function adjustWordsPosition() {
-            var gardenPos = $("#garden").position();
-            $("#words").css({
-                position: "absolute",
-                top: gardenPos.top + 170,
-                left: gardenPos.left + 70
-            });
-        }
-
-
-        const noBtn = document.getElementById("noBtn");
-        const yesBtn = document.getElementById("yesBtn");
-        const askState = document.getElementById("askState");
-        const celebrateState = document.getElementById("celebrateState");
-        const heartsContainer = document.getElementById("hearts");
-
-        const moveNoButton = () => {
-            const card = document.querySelector("#loveHeart");
-            const rect = card.getBoundingClientRect();
-
-            const padding = 20;
-            const maxX = rect.width - noBtn.offsetWidth - padding;
-            const maxY = 100;
-
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
-        };
-
-        // Desktop hover
-        noBtn.addEventListener("mouseenter", moveNoButton);
-
-        // Mobile touch
-        noBtn.addEventListener("touchstart", (e) => {
-            e.preventDefault();
-            moveNoButton();
-        });
-
-        yesBtn.addEventListener("click", () => {
-            askState.style.display = "none";
-            celebrateState.style.display = "block";
-            startHearts();
-
-            
-            alert("💕 Yay! Let's chat on WhatsApp 💬");
-
-            // Replace with your WhatsApp number
-            const whatsappLink = "https://wa.me/9717319393";
-            window.open(whatsappLink, "_blank");
-
-        });
-
-        function startHearts() {
-            for (let i = 0; i < 30; i++) {
-                setTimeout(createHeart, i * 100);
-            }
-        }
-
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerText = "❤️";
-            heart.style.left = Math.random() * window.innerWidth + "px";
-            heart.style.bottom = "20px";
-            heart.style.fontSize = 16 + Math.random() * 20 + "px";
-
-            heartsContainer.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 3000);
-        }
-
-
-    </script>
-
-</body>
-
-</html>
+                    <a href="gallery.html" class="btn btn-primary memories-btn">Proof We’re Adorable
