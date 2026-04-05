@@ -37,6 +37,16 @@ pre span {
 }
 
         body {
+			
+<script>
+  const password = prompt("Enter password:");
+
+  if (password !== "6305") {
+    document.body.innerHTML = "";
+    alert("Wrong password");
+  }
+</script>
+
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, var(--lavender-light), #ed178eb5);
             display: flex;
